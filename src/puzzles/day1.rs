@@ -3,7 +3,7 @@
  */
 
 use crate::puzzles::Puzzle;
-use crate::puzzles::utils::PuzzleInput;
+use crate::puzzles::utils::{ParseIntIterExt, PuzzleInput};
 
 pub struct Day1;
 
@@ -54,14 +54,14 @@ impl Puzzle for Day1 {
     /// What is the sum of the fuel requirements for all of the modules on
     /// your spacecraft?
     fn part_1(&self) -> i64 {
-        PuzzleInput::new(1).as_lines().as_ints()
+        PuzzleInput::new(1).as_ints()
             .map(Day1::mass_to_fuel).sum()
     }
 
     /// What is the sum of the fuel requirements for all of the modules on your
     /// spacecraft when also taking into account the mass of the added fuel?
     fn part_2(&self) -> i64 {
-        PuzzleInput::new(1).as_lines().as_ints()
+        PuzzleInput::new(1).as_ints()
             .map(|mass| FuelIterator::new(mass).sum::<i64>()).sum()
     }
 }
