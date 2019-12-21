@@ -33,12 +33,12 @@ impl Puzzle for Day2 {
         let input = PuzzleInput::new(2).next().unwrap();
         let init_mem = Intcode::parse(input);
 
-        'noun_loop: for noun in 0..99 {
-            for verb in 0..99 {
+        'noun_loop: for noun in 0..100 {
+            for verb in (0..100).rev() {
                 let rc = Intcode::new(init_mem.clone(), noun, verb).run();
                 if rc == 19690720 {
                     return (100 * noun + verb) as i64;
-                } else if rc > 19690720 {
+                } else if rc < 19690720 {
                     // the Intcode program is monotonically increasing
                     continue 'noun_loop;
                 }
