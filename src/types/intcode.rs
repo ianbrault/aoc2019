@@ -9,9 +9,12 @@ type IntcodeInstr = (i64, i64, i64, i64);
 /// An Intcode program is a list of integers separated by commas. To run one,
 /// start by looking at the first integer (position 0). Here, you will find an
 /// opcode - either 1, 2, or 99.
+///
 /// Opcode 1 adds together numbers read from two positions and stores the
 /// result in a third position.
+///
 /// Opcode 2 works exactly like opcode 1, except it multiplies the two inputs.
+///
 /// Opcode 99 means that the program is finished and should immediately halt.
 pub struct Intcode {
     memory: Vec<i64>,
