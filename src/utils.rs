@@ -1,6 +1,6 @@
 /*
- * src/puzzles/utils.rs
- */
+** src/utils.rs
+*/
 
 use std::fs::File;
 use std::io::{self, prelude::*, BufReader, Lines};

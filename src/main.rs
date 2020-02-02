@@ -1,11 +1,13 @@
 /*
- * src/main.rs
- * Advent of Code 2019
- * as implemented in Rust by Ian Brault
- * see https://adventofcode.com/2019
- */
+** src/main.rs
+** Advent of Code 2019
+** as implemented in Rust by Ian Brault
+** see https://adventofcode.com/2019
+*/
 
 mod puzzles;
+mod types;
+mod utils;
 
 fn main() {
     println!("Advent of Code 2019 [Rust]");

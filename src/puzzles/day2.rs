@@ -3,8 +3,8 @@
  */
 
 use crate::puzzles::Puzzle;
-use crate::puzzles::intcode::Intcode;
-use crate::puzzles::utils::PuzzleInput;
+use crate::types::intcode::Intcode;
+use crate::utils::PuzzleInput;
 
 pub struct Day2;
 

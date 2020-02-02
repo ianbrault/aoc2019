@@ -1,8 +1,8 @@
 /*
- * src/puzzles/intcode.rs
- */
+** src/types/intcode.rs
+*/
 
-use crate::puzzles::utils::ParseIntIterExt;
+use crate::utils::ParseIntIterExt;
 
 type IntcodeInstr = (i64, i64, i64, i64);
 

@@ -1,9 +1,9 @@
 /*
- * src/puzzles/day1.rs
- */
+** src/puzzles/day1.rs
+*/
 
 use crate::puzzles::Puzzle;
-use crate::puzzles::utils::{ParseIntIterExt, PuzzleInput};
+use crate::utils::{ParseIntIterExt, PuzzleInput};
 
 pub struct Day1;
 
