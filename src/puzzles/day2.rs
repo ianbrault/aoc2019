@@ -3,7 +3,7 @@
  */
 
 use crate::puzzles::Puzzle;
-use crate::types::intcode::Intcode;
+use crate::types::Intcode;
 use crate::utils::PuzzleInput;
 
 pub struct Day2;
