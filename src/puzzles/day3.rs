@@ -6,7 +6,6 @@ use crate::puzzles::Puzzle;
 use crate::types::{Point, Wire};
 use crate::utils::PuzzleInput;
 
-
 pub struct Day3;
 
 impl Day3 {
