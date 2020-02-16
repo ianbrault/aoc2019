@@ -46,14 +46,15 @@ impl<I> ParseIntIter<I> {
     }
 }
 
-impl<I> Iterator for ParseIntIter<I>
-where I: Iterator<Item=String>
+impl<I, S> Iterator for ParseIntIter<I>
+where I: Iterator<Item=S>,
+      S: Into<String>
 {
     type Item = i64;
 
     fn next(&mut self) -> Option<Self::Item> {
         match self.inner.next() {
-            Some(s) => Some(s.parse::<i64>().unwrap()),
+            Some(s) => Some(s.into().parse::<i64>().unwrap()),
             None => None
         }
     }

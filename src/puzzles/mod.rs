@@ -6,11 +6,13 @@ mod day1;
 mod day2;
 mod day3;
 mod day4;
+mod day5;
 
 use day1::Day1;
 use day2::Day2;
 use day3::Day3;
 use day4::Day4;
+use day5::Day5;
 
 /// trait object for daily Puzzles
 pub trait Puzzle {
@@ -25,5 +27,6 @@ pub fn all_puzzles() -> Vec<Box<dyn Puzzle>> {
         Box::new(Day2::new()),
         Box::new(Day3::new()),
         Box::new(Day4::new()),
+        Box::new(Day5::new()),
     ]
 }

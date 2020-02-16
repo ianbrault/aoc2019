@@ -1,6 +1,6 @@
 /*
- * src/puzzles/day2.rs
- */
+** src/puzzles/day2.rs
+*/
 
 use crate::puzzles::Puzzle;
 use crate::types::Intcode;
@@ -22,8 +22,10 @@ impl Puzzle for Day2 {
     /// value is left at position 0 after the program halts?
     fn part_1(&self) -> i64 {
         let input = PuzzleInput::new(2).next().unwrap();
-        let mut prog = Intcode::new(Intcode::parse(input), 12, 2);
-        prog.run()
+        let mut prog = Intcode::new(Intcode::parse(input))
+            .set_noun_verb(12, 2);
+        prog.run();
+        prog.memory[0]
     }
 
     /// Find the input noun and verb that cause the program to produce the
@@ -35,17 +37,18 @@ impl Puzzle for Day2 {
 
         'noun_loop: for noun in 0..100 {
             for verb in (0..100).rev() {
-                let rc = Intcode::new(init_mem.clone(), noun, verb).run();
-                if rc == 19690720 {
+                let mut prog = Intcode::new(init_mem.clone())
+                    .set_noun_verb(noun, verb);
+                prog.run();
+                if prog.memory[0] == 19690720 {
                     return (100 * noun + verb) as i64;
-                } else if rc < 19690720 {
+                } else if prog.memory[0] < 19690720 {
                     // the Intcode program is monotonically increasing
                     continue 'noun_loop;
                 }
             }
         }
-        // should never hit this point
-        -1
+        panic!("end of loop reached, this should never happend")
     }
 }
 
