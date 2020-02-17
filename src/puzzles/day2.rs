@@ -6,11 +6,16 @@ use crate::puzzles::Puzzle;
 use crate::types::Intcode;
 use crate::utils::PuzzleInput;
 
-pub struct Day2;
+pub struct Day2 {
+    intcode_memory: Vec<i64>,
+}
 
 impl Day2 {
     pub fn new() -> Self {
-        Self { }
+        let input = PuzzleInput::new(2).next().unwrap();
+        Self {
+            intcode_memory: Intcode::parse(input),
+        }
     }
 }
 
@@ -21,8 +26,7 @@ impl Puzzle for Day2 {
     /// program, replace position 1 with 12 and replace position 2 with 2. What
     /// value is left at position 0 after the program halts?
     fn part_1(&self) -> i64 {
-        let input = PuzzleInput::new(2).next().unwrap();
-        let mut prog = Intcode::new(Intcode::parse(input))
+        let mut prog = Intcode::new(self.intcode_memory.clone())
             .set_noun_verb(12, 2);
         prog.run();
         prog.memory[0]
@@ -32,12 +36,9 @@ impl Puzzle for Day2 {
     /// output 19690720. What is 100 * noun + verb? (For example, if noun=12
     /// and verb=2, the answer would be 1202.)
     fn part_2(&self) -> i64 {
-        let input = PuzzleInput::new(2).next().unwrap();
-        let init_mem = Intcode::parse(input);
-
         'noun_loop: for noun in 0..100 {
             for verb in (0..100).rev() {
-                let mut prog = Intcode::new(init_mem.clone())
+                let mut prog = Intcode::new(self.intcode_memory.clone())
                     .set_noun_verb(noun, verb);
                 prog.run();
                 if prog.memory[0] == 19_690_720 {

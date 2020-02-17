@@ -5,11 +5,19 @@
 use crate::puzzles::Puzzle;
 use crate::types::Password;
 
-pub struct Day4;
+pub struct Day4 {
+    passwords: Vec<Password>,
+}
 
 impl Day4 {
     pub fn new() -> Self {
-        Self { }
+        // password bounds from puzzle input
+        let (lower, upper) = (171_309, 643_603);
+        Self {
+            // generate all passwords satisfying conditions 1, 2, and 4
+            // condition 3 will be filtered out in the respective solutions
+            passwords: Password::generate_in_range(lower, upper),
+        }
     }
 }
 
@@ -24,12 +32,8 @@ impl Puzzle for Day4 {
     /// How many different passwords within the range given in your puzzle
     /// input meet these criteria?
     fn part_1(&self) -> i64 {
-        // puzzle input
-        let (lower, upper) = (171_309, 643_603);
-
-        let passwords = Password::generate_in_range(lower, upper);
         // filter out all that do not contain any repeated digits
-        passwords.into_iter()
+        self.passwords.iter()
             .filter(|p| p.contains_repeat())
             .count() as i64
     }
@@ -46,12 +50,8 @@ impl Puzzle for Day4 {
     /// How many different passwords within the range given in your puzzle
     /// input meet all of the criteria?
     fn part_2(&self) -> i64 {
-        // puzzle input
-        let (lower, upper) = (171_309, 643_603);
-
-        let passwords = Password::generate_in_range(lower, upper);
         // filter out all that do not contain any length-2 repeated digits
-        passwords.into_iter()
+        self.passwords.iter()
             .filter(|p| p.contains_2repeat())
             .count() as i64
     }
