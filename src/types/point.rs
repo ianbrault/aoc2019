@@ -16,15 +16,15 @@ impl Point {
         Self { x, y }
     }
 
-    pub fn is_origin(&self) -> bool {
+    pub fn is_origin(self) -> bool {
         self.x == 0 && self.y == 0
     }
 
-    pub fn manhattan_distance(&self) -> i32 {
+    pub fn manhattan_distance(self) -> i32 {
         self.x.abs() + self.y.abs()
     }
 
-    pub fn distance_to(&self, other: &Self) -> i32 {
+    pub fn distance_to(self, other: Self) -> i32 {
         (other.x - self.x).abs() + (other.y - self.y).abs()
     }
 }

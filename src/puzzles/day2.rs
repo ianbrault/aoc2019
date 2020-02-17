@@ -40,9 +40,9 @@ impl Puzzle for Day2 {
                 let mut prog = Intcode::new(init_mem.clone())
                     .set_noun_verb(noun, verb);
                 prog.run();
-                if prog.memory[0] == 19690720 {
+                if prog.memory[0] == 19_690_720 {
                     return (100 * noun + verb) as i64;
-                } else if prog.memory[0] < 19690720 {
+                } else if prog.memory[0] < 19_690_720 {
                     // the Intcode program is monotonically increasing
                     continue 'noun_loop;
                 }

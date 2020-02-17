@@ -1,6 +1,6 @@
 /*
 ** src/puzzles/day3.rs
-**/
+*/
 
 use crate::puzzles::Puzzle;
 use crate::types::{Point, Wire};
@@ -24,7 +24,7 @@ impl Puzzle for Day3 {
         let wire_2 = Wire::from(input.next().unwrap());
 
         // get all intersections, find the minimum Manhattan distance
-        wire_1.intersections(&wire_2).iter()
+        wire_1.intersections(&wire_2).into_iter()
             .map(Point::manhattan_distance)
             .min().unwrap() as i64
     }

@@ -51,7 +51,7 @@ pub struct Intcode {
 
 impl Intcode {
     pub fn parse(prog_text: String) -> Vec<i64> {
-        prog_text.split(",").as_ints().collect::<Vec<_>>()
+        prog_text.split(',').as_ints().collect::<Vec<_>>()
     }
 
     pub fn new(memory: Vec<i64>) -> Self {
@@ -256,7 +256,7 @@ impl Iterator for Intcode {
             99 => {
                 return None;
             },
-            opcode @ _ => {
+            opcode => {
                 panic!("{}: unknown opcode {}", self.instr_ptr, opcode)
             }
         }

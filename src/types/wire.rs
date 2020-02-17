@@ -72,14 +72,12 @@ impl WireSegment {
                     // self is horizontal, other is vertical
                     Some(Point::new(other.p1.x, self.p1.y))
                 }
+            } else if other.p1.y == other.p2.y {
+                // self is vertical, other is horizontal
+                Some(Point::new(self.p1.x, other.p1.y))
             } else {
-                if other.p1.y == other.p2.y {
-                    // self is vertical, other is horizontal
-                    Some(Point::new(self.p1.x, other.p1.y))
-                } else {
-                    // both vertical lines
-                    Some(self.overlap_intersection(other))
-                }
+                // both vertical lines
+                Some(self.overlap_intersection(other))
             }
         } else {
             None
@@ -115,9 +113,9 @@ impl Wire {
 
         for wline in self.segments.iter() {
             // wire line overlaps the target line x-range
-            if wline.p1.x >= seg_lower && wline.p1.x <= seg_upper {
-                range.push(wline);
-            } else if wline.p2.x >= seg_lower && wline.p2.x <= seg_upper {
+            let overlap = wline.p1.x >= seg_lower && wline.p1.x <= seg_upper
+                       || wline.p2.x >= seg_lower && wline.p2.x <= seg_upper;
+            if overlap {
                 range.push(wline);
             }
         }
@@ -151,8 +149,8 @@ impl Wire {
             for seg in self.bts_range(seg_other) {
                 if let Some(pt) = seg_other.intersection(seg) {
                     if !pt.is_origin() {
-                        let w1_dist = seg_other.path_pfix + seg_other.p1.distance_to(&pt) as u32;
-                        let w2_dist = seg.path_pfix + seg.p1.distance_to(&pt) as u32;
+                        let w1_dist = seg_other.path_pfix + seg_other.p1.distance_to(pt) as u32;
+                        let w2_dist = seg.path_pfix + seg.p1.distance_to(pt) as u32;
                         isects.push((w1_dist, w2_dist));
                     }
                 }
@@ -170,7 +168,7 @@ impl From<String> for Wire {
         let (mut x, mut y) = (0, 0);
         let mut path_len = 0;
 
-        for wstr in s.split(",") {
+        for wstr in s.split(',') {
             let p1 = Point::new(x, y);
 
             let len = &wstr[1..(wstr.len())].parse().unwrap();

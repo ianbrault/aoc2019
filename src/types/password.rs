@@ -30,7 +30,7 @@ impl Password {
             dcnt[d as usize] += 1;
         }
 
-        dcnt.into_iter().find(|&&dcnt| dcnt == 2).is_some()
+        dcnt.iter().any(|&dcnt| dcnt == 2)
     }
 
     // increment with wrap-around
@@ -95,8 +95,8 @@ impl Password {
     /// will NOT maintain the repeat digit conditions
     pub fn generate_in_range(lower: i64, upper: i64) -> Vec<Self> {
         // for ease of implementation, expand the bounds to the nearest thousand
-        let lower_digit = (lower / 100000) as u8;
-        let upper_digit = ((upper / 100000) + 1) as u8;
+        let lower_digit = (lower / 100_000)       as u8;
+        let upper_digit = ((upper / 100_000) + 1) as u8;
 
         // generate an increasing sequence maintaining the condition that all
         // digits must be increasing
@@ -106,7 +106,7 @@ impl Password {
         let p_lo = Password::from(lower);
         let p_hi = Password::from(upper);
         gen.into_iter()
-            .filter(|p| p >= &p_lo && p <= &p_hi)
+            .filter(|p| *p >= p_lo && *p <= p_hi)
             .collect()
     }
 }
@@ -136,7 +136,7 @@ impl Ord for Password {
         for (s_dig, o_dig) in self.digits.iter().zip(other.digits.iter()) {
             match s_dig.cmp(o_dig) {
                 Ordering::Equal => {},
-                res @ _ => return res,
+                res => return res,
             }
         }
 

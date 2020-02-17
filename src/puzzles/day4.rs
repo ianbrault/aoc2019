@@ -1,6 +1,6 @@
 /*
 ** src/puzzles/day4.rs
-**/
+*/
 
 use crate::puzzles::Puzzle;
 use crate::types::Password;
@@ -25,14 +25,13 @@ impl Puzzle for Day4 {
     /// input meet these criteria?
     fn part_1(&self) -> i64 {
         // puzzle input
-        let (lower, upper) = (171309, 643603);
+        let (lower, upper) = (171_309, 643_603);
 
         let passwords = Password::generate_in_range(lower, upper);
         // filter out all that do not contain any repeated digits
         passwords.into_iter()
             .filter(|p| p.contains_repeat())
-            .collect::<Vec<Password>>()
-            .len() as i64
+            .count() as i64
     }
 
     /// Additional criteria: the two adjacent matching digits are not part of a
@@ -48,14 +47,12 @@ impl Puzzle for Day4 {
     /// input meet all of the criteria?
     fn part_2(&self) -> i64 {
         // puzzle input
-        let (lower, upper) = (171309, 643603);
+        let (lower, upper) = (171_309, 643_603);
 
         let passwords = Password::generate_in_range(lower, upper);
         // filter out all that do not contain any length-2 repeated digits
         passwords.into_iter()
             .filter(|p| p.contains_2repeat())
-            // .map(|p| { dbg!(&p); p })
-            .collect::<Vec<Password>>()
-            .len() as i64
+            .count() as i64
     }
 }
