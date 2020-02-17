@@ -2,11 +2,13 @@
 ** src/types/mod.rs
 */
 
-pub mod intcode;
-pub mod password;
-pub mod point;
-pub mod wire;
+mod dag;
+mod intcode;
+mod password;
+mod point;
+mod wire;
 
+pub use dag::DAG;
 pub use intcode::Intcode;
 pub use password::Password;
 pub use point::Point;
