@@ -3,8 +3,8 @@
 */
 
 use crate::puzzles::Puzzle;
-use crate::types::Intcode;
-use crate::utils::PuzzleInput;
+use crate::types::intcode::{self, Intcode};
+use crate::utils::{self, PuzzleInput};
 
 pub struct Day5 {
     // TEST diagnostic program
@@ -27,25 +27,41 @@ impl Puzzle for Day5 {
     fn part_1(&self) -> i64 {
         let ac_unit_id = 1;
         let mut prog = Intcode::new(self.program_memory.clone())
-            .input(ac_unit_id);
+            .with_input(ac_unit_id);
+
         prog.run();
+        if prog.status != intcode::Status::Halted {
+            panic!("program did not halt")
+        }
 
         // validate outputs and get the diagnostic
-        if let Some((i, out)) = prog.validate_output() {
-            panic!("program test {} returned {}", i, out)
+        for (is_last, &out) in utils::is_last(prog.output_iter()) {
+            if is_last {
+                return out;
+            } else if out != 0{
+                panic!("program test returned {}", out)
+            }
         }
-        prog.diagnostic_code()
+        panic!("program produced no output")
     }
 
     /// What is the diagnostic code for system ID 5?
     fn part_2(&self) -> i64 {
         let thrm_rad_ctrl_id = 5;
         let mut prog = Intcode::new(self.program_memory.clone())
-            .input(thrm_rad_ctrl_id);
-        prog.run();
+            .with_input(thrm_rad_ctrl_id);
 
-        // only provides the diagnostic code output, no need to validate others
-        prog.diagnostic_code()
+        prog.run();
+        if prog.status != intcode::Status::Halted {
+            panic!("program did not halt")
+        }
+
+        // only provides the diagnostic code output
+        if let Some(diagnostic_code) = prog.output() {
+            diagnostic_code
+        } else {
+            panic!("program produced no output")
+        }
     }
 }
 

@@ -4,10 +4,12 @@
 
 use std::fs::File;
 use std::io::{self, prelude::*, BufReader, Lines};
+use std::iter;
 use std::path::Path;
 
 type FileLines = Lines<BufReader<File>>;
 
+// an iterator over lines in an input file
 pub struct PuzzleInput {
     inner: FileLines,
 }
@@ -36,6 +38,7 @@ impl Iterator for PuzzleInput {
     }
 }
 
+// parses i64's out of an iterator over string-like items
 pub struct ParseIntIter<I> {
     inner: I,
 }
@@ -60,6 +63,7 @@ where I: Iterator<Item=S>,
     }
 }
 
+// iterator extension for ParseIntIter
 pub trait ParseIntIterExt: Iterator
 where Self: Sized
 {
@@ -69,3 +73,74 @@ where Self: Sized
 }
 
 impl<I: Iterator> ParseIntIterExt for I {}
+
+// an iterator over all possible permutations of an input iterator
+pub struct Permutations<'a, T> {
+    // allocate the memory for returned permutations
+    mem: Vec<&'a T>,
+    first_iter: bool,
+    // acts as the stack pointer
+    i: usize,
+    // encodes the stack state
+    // c[k] is the for-loop counter for i = k + 1
+    c: Vec<usize>,
+}
+
+impl<'a, T> Permutations<'a, T> {
+    pub fn new(items: &'a [T]) -> Self {
+        let mut mem = Vec::with_capacity(items.len());
+        for el in items {
+            mem.push(el);
+        }
+
+        Self {
+            mem,
+            first_iter: true,
+            i: 0,
+            c: vec![0; items.len()],
+        }
+    }
+}
+
+impl<'a, T> Iterator for Permutations<'a, T> {
+    type Item=Vec<&'a T>;
+
+    // iterator-adapted implementation of Heap's algorithm
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.first_iter {
+            // return the input with no swaps on the first iteration
+            self.first_iter = false;
+            Some(self.mem.clone())
+        } else if self.i == self.mem.len() {
+            // iteration is complete when the stack pointer hits the container length
+            None
+        } else if self.c[self.i] < self.i {
+            if self.i % 2 == 0 {
+                self.mem.swap(0, self.i);
+            } else {
+                self.mem.swap(self.c[self.i], self.i);
+            }
+            // increment the state, reset the stack pointer
+            self.c[self.i] += 1;
+            self.i = 0;
+            Some(self.mem.clone())
+        } else {
+            // reset state, simulate stack pop by incrementing stack pointer
+            self.c[self.i] = 0;
+            self.i += 1;
+            // recursive call to hit the if-condition
+            self.next()
+        }
+    }
+}
+
+// sourced from Kerollmops' iterator kit
+// see https://gist.github.com/Kerollmops/5da7c03b6601d63b4345173f895756a6
+pub fn is_last<I>(iter: I) -> impl Iterator<Item=(bool, I::Item)>
+where I: IntoIterator
+{
+    let mut iter = iter.into_iter().peekable();
+    iter::from_fn(move || {
+        iter.next().map(|item| (iter.peek().is_none(), item))
+    })
+}

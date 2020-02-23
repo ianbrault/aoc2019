@@ -3,7 +3,7 @@
 */
 
 use crate::puzzles::Puzzle;
-use crate::types::Intcode;
+use crate::types::intcode::{self, Intcode};
 use crate::utils::PuzzleInput;
 
 pub struct Day2 {
@@ -28,7 +28,12 @@ impl Puzzle for Day2 {
     fn part_1(&self) -> i64 {
         let mut prog = Intcode::new(self.intcode_memory.clone())
             .set_noun_verb(12, 2);
+
         prog.run();
+        if prog.status != intcode::Status::Halted {
+            panic!("program did not halt")
+        }
+
         prog.memory[0]
     }
 
@@ -40,7 +45,12 @@ impl Puzzle for Day2 {
             for verb in (0..100).rev() {
                 let mut prog = Intcode::new(self.intcode_memory.clone())
                     .set_noun_verb(noun, verb);
+
                 prog.run();
+                if prog.status != intcode::Status::Halted {
+                    panic!("program did not halt")
+                }
+
                 if prog.memory[0] == 19_690_720 {
                     return (100 * noun + verb) as i64;
                 } else if prog.memory[0] < 19_690_720 {

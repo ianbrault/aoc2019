@@ -3,7 +3,7 @@
 */
 
 mod dag;
-mod intcode;
+pub mod intcode;
 mod password;
 mod point;
 mod wire;
