@@ -155,6 +155,7 @@ where I: IntoIterator
     iter::from_fn(move || {
         let mut an = 0;
         let mut acc = vec![];
+        #[allow(clippy::while_let_on_iterator)]
         while let Some(el) = iter.next() {
             acc.push(el);
             an += 1;

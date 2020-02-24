@@ -2,6 +2,8 @@
 ** src/puzzles/day8.rs
 */
 
+#![allow(clippy::naive_bytecount)]
+
 use crate::puzzles::Puzzle;
 use crate::types::SIFImage;
 use crate::utils::{self, PuzzleInput};
