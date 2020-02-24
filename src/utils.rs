@@ -134,6 +134,8 @@ impl<'a, T> Iterator for Permutations<'a, T> {
     }
 }
 
+// for each item returned by the iterator, indicate whether or not it is the
+// last item to be returned
 // sourced from Kerollmops' iterator kit
 // see https://gist.github.com/Kerollmops/5da7c03b6601d63b4345173f895756a6
 pub fn is_last<I>(iter: I) -> impl Iterator<Item=(bool, I::Item)>
@@ -142,5 +144,29 @@ where I: IntoIterator
     let mut iter = iter.into_iter().peekable();
     iter::from_fn(move || {
         iter.next().map(|item| (iter.peek().is_none(), item))
+    })
+}
+
+// clump an iterator into uniform-sized groups
+pub fn clump<I>(iter: I, n: usize) -> impl Iterator<Item=Vec<I::Item>>
+where I: IntoIterator
+{
+    let mut iter = iter.into_iter().peekable();
+    iter::from_fn(move || {
+        let mut an = 0;
+        let mut acc = vec![];
+        while let Some(el) = iter.next() {
+            acc.push(el);
+            an += 1;
+            if an == n {
+                break;
+            }
+        }
+
+        if acc.is_empty() {
+            None
+        } else {
+            Some(acc)
+        }
     })
 }
